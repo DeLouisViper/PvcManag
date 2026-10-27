@@ -20,10 +20,18 @@ async function callFn(body: Record<string, unknown>): Promise<{ ok: true } | { o
   if (error) {
     let msg = error.message
     const ctx = (error as { context?: Response }).context
+    const status = ctx && typeof ctx.status === 'number' ? ctx.status : 0
     if (ctx && typeof ctx.json === 'function') {
-      try { msg = ((await ctx.json()) as { error?: string }).error ?? msg } catch { /* keep message */ }
+      try {
+        const j = (await ctx.json()) as { error?: string; message?: string; msg?: string }
+        msg = j.error ?? j.message ?? j.msg ?? msg
+      } catch {
+        /* keep message */
+      }
     }
-    return { ok: false, error: msg, unreachable: /Failed to send|fetch|404|not found/i.test(msg) }
+    // only "could not even send the request" or "function does not exist" count as unreachable
+    const unreachable = error.name === 'FunctionsFetchError' || status === 404
+    return { ok: false, error: status ? `${msg} (HTTP ${status})` : msg, unreachable }
   }
   return (data as { ok?: boolean })?.ok ? { ok: true } : { ok: false, error: (data as { error?: string })?.error ?? 'error' }
 }
