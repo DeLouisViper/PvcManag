@@ -1,0 +1,64 @@
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/700.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root { height: 100%; }
+  body {
+    @apply bg-tva-dark text-tva-cream font-mono antialiased;
+    background-image:
+      linear-gradient(rgba(255,138,31,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,138,31,0.045) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  ::selection { background: #ff8a1f; color: #14100c; }
+  input, select, textarea { color-scheme: dark; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #14100c; }
+  ::-webkit-scrollbar-thumb { background: #4a2c14; border: 2px solid #14100c; }
+  ::-webkit-scrollbar-thumb:hover { background: #7a4a24; }
+}
+
+@layer components {
+  .panel { @apply border-2 border-tva-brown bg-tva-panel relative; }
+  .panel-hd { @apply flex items-center justify-between gap-2 border-b-2 border-tva-brown bg-tva-brown-dark px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-tva-amber; }
+  .panel-bd { @apply p-3 sm:p-4; }
+  .label { @apply mb-1 block text-[11px] font-bold uppercase tracking-widest text-tva-sand; }
+  .field { @apply w-full border-2 border-tva-brown bg-tva-dark px-2 py-1.5 text-sm text-tva-cream placeholder:text-tva-brown focus:border-tva-orange focus:shadow-tva-glow focus:outline-none disabled:opacity-50; }
+  .field-err { @apply border-tva-red; }
+  .btn { @apply inline-flex items-center justify-center gap-2 border-2 border-tva-orange bg-transparent px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-tva-orange transition-colors hover:bg-tva-orange hover:text-tva-dark focus:outline-none focus-visible:shadow-tva-glow disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-tva-orange; }
+  .btn-solid { @apply bg-tva-orange text-tva-dark hover:bg-tva-amber hover:border-tva-amber disabled:hover:bg-tva-orange disabled:hover:text-tva-dark; }
+  .btn-danger { @apply border-tva-red text-tva-red hover:bg-tva-red hover:text-tva-dark disabled:hover:text-tva-red; }
+  .btn-ghost { @apply border-tva-brown text-tva-sand hover:bg-tva-brown hover:text-tva-cream; }
+  .tbl { @apply w-full border-collapse text-sm; }
+  .tbl th { @apply border-b-2 border-tva-brown bg-tva-brown-dark px-2 py-1.5 text-left text-[11px] font-bold uppercase tracking-widest text-tva-amber whitespace-nowrap; }
+  .tbl td { @apply border-b border-tva-brown-dark px-2 py-1.5 align-top; }
+  .tbl tbody tr:hover { @apply bg-tva-panel2; }
+  .num { @apply text-right tabular-nums; }
+  .tag { @apply inline-block border px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest; }
+  .tag-ok { @apply border-tva-teal text-tva-teal; }
+  .tag-warn { @apply border-tva-amber text-tva-amber; }
+  .tag-bad { @apply border-tva-red text-tva-red; }
+  .tag-mute { @apply border-tva-brown text-tva-sand; }
+}
+
+/* CRT scanlines + vignette (pointer-events none: never blocks the UI) */
+.crt::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,0.16) 3px);
+  mix-blend-mode: multiply;
+}
+.crt::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 61; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(255,138,31,0.03) 0%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.45) 100%);
+}
+.glow-text { text-shadow: 0 0 8px rgba(255,138,31,0.55); }
+@media (prefers-reduced-motion: reduce) {
+  .animate-blink, .animate-flicker, .animate-boot { animation: none !important; }
+}
+@media print { .crt::before, .crt::after { display: none; } }

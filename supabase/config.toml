@@ -1,0 +1,9 @@
+# Supabase CLI configuration (only needed when you use the CLI: supabase link / db push / functions deploy)
+project_id = "haic-pvc"
+
+[auth]
+# Users must NOT be able to register themselves: accounts are created by an administrator.
+enable_signup = false
+
+[functions.admin-users]
+verify_jwt = true
