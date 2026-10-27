@@ -6,7 +6,7 @@ const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined
 export const isConfigured = Boolean(url && key && !url.includes('YOUR-PROJECT'))
 
 // Only the public (publishable/anon) key is ever used in the browser. All authorisation is enforced by RLS + secure functions.
-export const supabase = createClient(url ?? 'http://localhost:54321', key ?? 'missing-key', {
+export const supabase = createClient(url || 'http://localhost:54321', key || 'missing-key', {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
 })
 
